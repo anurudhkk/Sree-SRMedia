@@ -1,1 +1,7 @@
+buildPack:
+  name: gradle
+environment:
+  RELEASE_NUMBER: 1.0.0
+  BKDK_INSTANCE: "bkdk13"
+  EMAIL_NOTIFICATION: "emailID@gmail.com"
 appListProperties
