@@ -4,19 +4,19 @@ environment:
   RELEASE_NUMBER: 1.0.0
   BKDK_INSTANCE: "bkdk13"
   EMAIL_NOTIFICATION: "emailID@gmail.com"
-  RTF INSTANCE: "enterprise"
-  RTF_RELEASE REPO: "maven-ccap-local"
-  RTF SNAPSHOT REPO: "maven-ccap-local"
-  RTF VIRTUAL REPO:
+  RTF_INSTANCE: "enterprise"
+  RTF_RELEASE_REPO: "maven-ccap-local"
+  RTF_SNAPSHOT_REPO: "maven-ccap-local"
+  RTF_VIRTUAL_REPO:
     - "maven-ccap-virtual"
     - "maven-wf-legacy-virtual"
     - "maven-wf-virtual"
     - "maven-external-virtual"
   JDK: "javalljdk-current"
-  SNAPSHOT BUILD: "false"
-  CX PRESET: ALL-EASP-HRA
+  SNAPSHOT_BUILD: "false"
+  CX_PRESET: ALL-EASP-HRA
   LOCAL_WORKSPACE: true
-  LOG LEVEL: DEBUG
+  LOG_LEVEL: DEBUG
   CK_ASYNCHRONOUS: true
 
 applistProperties:
@@ -35,8 +35,8 @@ applistProperties:
       parans: "pitest"
       enable: false #Enabled by default
   sonar:
-    params: Osonar.coverage.exclusions:bod/***
-    SONAR ENV: sonarprod poda dc
+    params: " -Osonar.coverage.exclusions=:bdd/**"
+    SONAR_ENV: sonar_prod_poda_dc
     nonDefaultQualityGateID: "903" # Quality gate id to be selected as per application type, see details below
     breakOnFailure: true
 
@@ -58,17 +58,17 @@ applistProperties:
     enabileScan: true
 
   components:
-    - name: CA03792-
+    - name: CA03792-cardeligibility
       includePatterns:
         - "ccap-cardeligibility.jar"
-        "manifest.yml"
-        "services.yml"
+        - "manifest.yml"
+        - "services.yml"
       groupId: "com.ccap-cardeligibility"
       artifactId: ccap-cardeligibility
       
-# TO DO: Please update before usage: Modify the below properties as per the deployment requirement
+  # TODO: Please update before usage: Modify the below properties as per the deployment requirement
   deploy:
-    gateApprovalTimeout: "th"
+    gateApprovalTimeout: "1h"
     deployViaharness: true
     harness:
       payload:
@@ -76,15 +76,15 @@ applistProperties:
         githubBranch: develop    #application config repository githubBranch
         stageIDs: dev, test    # comme seperated list of harness stageIDs
         InputsetIDs: cicdbasicTrigger    #harness inputsetIDs cicbasicTrigger
-        environment ID: devtemrclfnn07
-        Infrastructure 1D: tasdevtemrclfnn07
+        environmentID: devtemrclfnn07
+        InfrastructureID: tasdevtemrclfnn07
       trigger:
         url: https://app3.harness.io/gateway/pipeline/api/webhook/custom/1110016NRsGq
     dev:
-      autoEntry Approval: true
+      autoEntryApproval: true
       autoExitApproval: true
       environments:
-        - name: sit-sls-clfn-n-07
+        - name: dev-temr-clfn-n-07
     qa:
       autoEntryApproval: true
       autoExitApproval: true
@@ -112,7 +112,7 @@ pipelines:
         disable: false
       - name: QADeploy
         disable: true
-name: PERFDeploy
-disable:true
-name: PROODeploy
-disable: true
+      - name: PERFDeploy
+        disable: true
+      - name: PRODDeploy
+        disable: true
