@@ -48,7 +48,7 @@ applistProperties:
   blackduck:
     artifacts:
       - name: "ccap-cardeligibility.jar"
-        groupId: "com.wellsfargo.ccap-cardeligibility"
+        groupId: "com.artifactory.ccap-cardeligibility"
         artifactid: ccap-cardeligibility
     isAsyncBuild: true
     disableSWCAUploadAfterScan: true
@@ -63,7 +63,7 @@ applistProperties:
         - "ccap-cardeligibility.jar"
         - "manifest.yml"
         - "services.yml"
-      groupId: "com.ccap-cardeligibility"
+      groupId: "com.artifactory.ccap-cardeligibility"
       artifactId: ccap-cardeligibility
       
   # TODO: Please update before usage: Modify the below properties as per the deployment requirement
