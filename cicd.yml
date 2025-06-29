@@ -55,7 +55,7 @@ applistProperties:
     threadfixUpload: false
 
   trufflehog:
-    enabileScan: true
+    enableScan: true
 
   components:
     - name: CA03792-cardeligibility
