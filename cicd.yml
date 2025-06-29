@@ -1,7 +1,7 @@
 buildPack:
   name: gradle
 environment:
-  RELEASE_NUMBER: BRANCH_NAME
+  RELEASE_NUMBER: "2025.06.28-D"
   BKDK_INSTANCE: "bkdk13"
   EMAIL_NOTIFICATION: "emailID@gmail.com"
   RTF_INSTANCE: "enterprise"
@@ -20,7 +20,7 @@ environment:
   CK_ASYNCHRONOUS: true
 
 applistProperties:
-  enablePCCA: false #GTG
+  enablePCCA: true
   codeReviewSubAppID: cardeligibility
   pitest:
     incrementanl: false #Runs PIT in full or incremental mode; default is true
