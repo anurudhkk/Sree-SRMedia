@@ -4,4 +4,115 @@ environment:
   RELEASE_NUMBER: 1.0.0
   BKDK_INSTANCE: "bkdk13"
   EMAIL_NOTIFICATION: "emailID@gmail.com"
-appListProperties
+  RTF INSTANCE: "enterprise"
+  RTF_RELEASE REPO: "maven-ccap-local"
+  RTF SNAPSHOT REPO: "maven-ccap-local"
+  RTF VIRTUAL REPO:
+    - "maven-ccap-virtual"
+    - "maven-wf-legacy-virtual"
+    - "maven-wf-virtual"
+    - "maven-external-virtual"
+  JDK: "javalljdk-current"
+  SNAPSHOT BUILD: "false"
+  CX PRESET: ALL-EASP-HRA
+  LOCAL_WORKSPACE: true
+  LOG LEVEL: DEBUG
+  CK_ASYNCHRONOUS: true
+
+applistProperties:
+  enablePCCA: false #GTG
+  codeReviewSubAppID: cardeligibility
+  pitest:
+    incrementanl: false #Runs PIT in full or incremental mode; default is true
+    IsAsyncBuild: true #Runs PIT in parallel of build
+    PRBuild:
+      params: "pitest"
+      enable: false #Disabled by default; must enable if required
+    SnapshotBuild:
+      params: "pitest"
+      enable: false #Disabled by default; must enable if required
+    ReleaseBuild:
+      parans: "pitest"
+      enable: false #Enabled by default
+  sonar:
+    params: Osonar.coverage.exclusions:bod/***
+    SONAR ENV: sonarprod poda dc
+    nonDefaultQualityGateID: "903" # Quality gate id to be selected as per application type, see details below
+    breakOnFailure: true
+
+  checkmarx:
+    enableScan: true
+    threadfixllpload: false
+    exclude PatternList:
+      add: .gradle, moduleInfo\.json, build\/.*\.json, *\/sonar.*\.xml, .*\/build\/.*\.xml, *\build\/\.Json, sonar Timp, sonar Tap
+  blackduck:
+    artifacts:
+      - name: "ccap-cardeligibility.jar"
+        groupId: "com.wellsfargo.ccap-cardeligibility"
+        artifactid: ccap-cardeligibility
+    isAsyncBuild: true
+    disableSWCAUploadAfterScan: true
+    threadfixUpload: false
+
+  trufflehog:
+    enabileScan: true
+
+  components:
+    - name: CA03792-
+      includePatterns:
+        - "ccap-cardeligibility.jar"
+        "manifest.yml"
+        "services.yml"
+      groupId: "com.ccap-cardeligibility"
+      artifactId: ccap-cardeligibility
+      
+# TO DO: Please update before usage: Modify the below properties as per the deployment requirement
+  deploy:
+    gateApprovalTimeout: "th"
+    deployViaharness: true
+    harness:
+      payload:
+        serviceID: tascardeligibility    #harness serviceID
+        githubBranch: develop    #application config repository githubBranch
+        stageIDs: dev, test    # comme seperated list of harness stageIDs
+        InputsetIDs: cicdbasicTrigger    #harness inputsetIDs cicbasicTrigger
+        environment ID: devtemrclfnn07
+        Infrastructure 1D: tasdevtemrclfnn07
+      trigger:
+        url: https://app3.harness.io/gateway/pipeline/api/webhook/custom/1110016NRsGq
+    dev:
+      autoEntry Approval: true
+      autoExitApproval: true
+      environments:
+        - name: sit-sls-clfn-n-07
+    qa:
+      autoEntryApproval: true
+      autoExitApproval: true
+      environments:
+        - name: sit-sls-clfn-n-07
+
+pipelines:
+  release:
+    stages:
+      - name: Gradle Build
+        disable: false
+      - name: Inspect
+        disable: false
+      - name: Publish
+        disable: false
+      - name: Validate CD Configuration
+        disable: true
+      - name: Scan
+        parallel:
+          - name: Blackduck Scan
+            disable: false
+          - name: Checkmarx Scan
+            disable: false
+      - name: DEVDeploy
+        disable: false
+      - name: QADeploy
+        disable: true
+name: PERFDeploy
+disable:true
+name: PROODeploy
+disable: true
