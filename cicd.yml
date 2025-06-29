@@ -2,80 +2,75 @@ buildPack:
   name: gradle
 environment:
   RELEASE_NUMBER: BRANCH_NAME
-  BKDK_INSTANCE: "bkdk13"
-  EMAIL_NOTIFICATION: "emailID@gmail.com"
-  RTF_INSTANCE: "enterprise"
-  RTF_RELEASE_REPO: "maven-ccap-local"
-  RTF_SNAPSHOT_REPO: "maven-ccap-local"
+  BKDK_INSTANCE: bkdk13
+  EMAIL_NOTIFICATION: emailID@gmail.com
+  RTF_INSTANCE: enterprise
+  RTF_RELEASE_REPO: maven-ccap-local
+  RTF_SNAPSHOT_REPO: maven-ccap-local
   RTF_VIRTUAL_REPO:
-    - "maven-ccap-virtual"
-    - "maven-wf-legacy-virtual"
-    - "maven-wf-virtual"
-    - "maven-external-virtual"
-  JDK: "javalljdk-current"
-  SNAPSHOT_BUILD: "false"
+  - maven-ccap-virtual
+  - maven-wf-legacy-virtual
+  - maven-wf-virtual
+  - maven-external-virtual
+  JDK: javalljdk-current
+  SNAPSHOT_BUILD: 'false'
   CX_PRESET: ALL-EASP-HRA
   LOCAL_WORKSPACE: true
   LOG_LEVEL: DEBUG
   CK_ASYNCHRONOUS: true
-
 applistProperties:
-  enablePCCA: false #GTG
+  enablePCCA: false
   codeReviewSubAppID: cardeligibility
   pitest:
-    incrementanl: false #Runs PIT in full or incremental mode; default is true
-    IsAsyncBuild: true #Runs PIT in parallel of build
+    incrementanl: false
+    IsAsyncBuild: true
     PRBuild:
-      params: "pitest"
-      enable: false #Disabled by default; must enable if required
+      params: pitest
+      enable: false
     SnapshotBuild:
-      params: "pitest"
-      enable: false #Disabled by default; must enable if required
+      params: pitest
+      enable: false
     ReleaseBuild:
-      parans: "pitest"
-      enable: false #Enabled by default
+      parans: pitest
+      enable: false
   sonar:
-    params: " -Osonar.coverage.exclusions=:bdd/**"
+    params: ' -Osonar.coverage.exclusions=:bdd/**'
     SONAR_ENV: sonar_prod_poda_dc
-    nonDefaultQualityGateID: "903" # Quality gate id to be selected as per application type, see details below
+    nonDefaultQualityGateID: '903'
     breakOnFailure: true
-
   checkmarx:
     enableScan: true
     threadfixllpload: false
     exclude PatternList:
-      add: .gradle, moduleInfo\.json, build\/.*\.json, *\/sonar.*\.xml, .*\/build\/.*\.xml, *\build\/\.Json, sonar Timp, sonar Tap
+      add: .gradle, moduleInfo\.json, build\/.*\.json, *\/sonar.*\.xml, .*\/build\/.*\.xml,
+        *\build\/\.Json, sonar Timp, sonar Tap
   blackduck:
     artifacts:
-      - name: "ccap-cardeligibility.jar"
-        groupId: "com.artifactory.ccap-cardeligibility"
-        artifactid: ccap-cardeligibility
+    - name: ccap-cardeligibility.jar
+      groupId: com.artifactory.ccap-cardeligibility
+      artifactid: ccap-cardeligibility
     isAsyncBuild: true
     disableSWCAUploadAfterScan: true
     threadfixUpload: false
-
   trufflehog:
     enableScan: true
-
   components:
-    - name: CA03792-cardeligibility
-      includePatterns:
-        - "ccap-cardeligibility.jar"
-        - "manifest.yml"
-        - "services.yml"
-      groupId: "com.artifactory.ccap-cardeligibility"
-      artifactId: ccap-cardeligibility
-      
-  # TODO: Please update before usage: Modify the below properties as per the deployment requirement
+  - name: CA03792-cardeligibility
+    includePatterns:
+    - ccap-cardeligibility.jar
+    - manifest.yml
+    - services.yml
+    groupId: com.artifactory.ccap-cardeligibility
+    artifactId: ccap-cardeligibility
   deploy:
-    gateApprovalTimeout: "1h"
+    gateApprovalTimeout: 1h
     deployViaharness: true
     harness:
       payload:
-        serviceID: tascardeligibility    #harness serviceID
-        githubBranch: develop    #application config repository githubBranch
-        stageIDs: dev, test    # comme seperated list of harness stageIDs
-        InputsetIDs: cicdbasicTrigger    #harness inputsetIDs cicbasicTrigger
+        serviceID: tascardeligibility
+        githubBranch: develop
+        stageIDs: dev, test
+        InputsetIDs: cicdbasicTrigger
         environmentID: devtemrclfnn07
         InfrastructureID: tasdevtemrclfnn07
       trigger:
@@ -84,35 +79,36 @@ applistProperties:
       autoEntryApproval: true
       autoExitApproval: true
       environments:
-        - name: dev-temr-clfn-n-07
+      - name: dev-temr-clfn-n-07
     qa:
       autoEntryApproval: true
       autoExitApproval: true
       environments:
-        - name: sit-sls-clfn-n-07
-
+      - name: sit-sls-clfn-n-07
 pipelines:
   release:
     stages:
-      - name: Gradle Build
+    - name: Gradle Build
+      disable: false
+    - name: Inspect
+      disable: false
+    - name: Publish
+      disable: false
+    - name: Validate CD Configuration
+      disable: true
+    - name: Scan
+      parallel:
+      - name: Blackduck Scan
         disable: false
-      - name: Inspect
+      - name: Checkmarx Scan
         disable: false
-      - name: Publish
-        disable: false
-      - name: Validate CD Configuration
-        disable: true
-      - name: Scan
-        parallel:
-          - name: Blackduck Scan
-            disable: false
-          - name: Checkmarx Scan
-            disable: false
-      - name: DEVDeploy
-        disable: false
-      - name: QADeploy
-        disable: true
-      - name: PERFDeploy
-        disable: true
-      - name: PRODDeploy
-        disable: true
+    - name: DEVDeploy
+      disable: false
+    - name: QADeploy
+      disable: true
+    - name: PERFDeploy
+      disable: true
+    - name: PRODDeploy
+      disable: true
+RELEASE_NUMBER: 2025.06.27-D
+enablepcca: true
