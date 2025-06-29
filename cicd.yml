@@ -1,7 +1,7 @@
 buildPack:
   name: gradle
 environment:
-  RELEASE_NUMBER: BRANCH_NAME
+  RELEASE_NUMBER: "2025.06.24-D"
   BKDK_INSTANCE: "bkdk13"
   EMAIL_NOTIFICATION: "emailID@gmail.com"
   RTF_INSTANCE: "enterprise"
