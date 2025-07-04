@@ -1,7 +1,7 @@
 buildPack:
   name: gradle
 environment:
-  RELEASE_NUMBER: BRANCH_NAME
+  RELEASE_NUMBER: "1.0.9"
   BKDK_INSTANCE: "bkdk13"
   EMAIL_NOTIFICATION: "emailID@gmail.com"
   RTF_INSTANCE: "enterprise"
@@ -20,7 +20,7 @@ environment:
   CK_ASYNCHRONOUS: true
 
 applistProperties:
-  enablePCCA: false
+  enablePCCA: true
   codeReviewSubAppID: cardeligibility
   pitest:
     incrementanl: false #Runs PIT in full or incremental mode; default is true
@@ -38,10 +38,10 @@ applistProperties:
     params: " -Osonar.coverage.exclusions=:bdd/**"
     SONAR_ENV: sonar_prod_poda_dc
     nonDefaultQualityGateID: "903" # Quality gate id to be selected as per application type, see details below
-    breakOnFailure: false
+    breakOnFailure: true
 
   checkmarx:
-    enableScan: false
+    enableScan: true
     threadfixllpload: false
     exclude PatternList:
       add: .gradle, moduleInfo\.json, build\/.*\.json, *\/sonar.*\.xml, .*\/build\/.*\.xml, *\build\/\.Json, sonar Timp, sonar Tap
@@ -109,7 +109,7 @@ pipelines:
           - name: Checkmarx Scan
             disable: false
       - name: DEVDeploy
-        disable: true
+        disable: false
       - name: QADeploy
         disable: true
       - name: PERFDeploy
